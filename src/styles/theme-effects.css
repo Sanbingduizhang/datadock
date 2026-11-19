@@ -1,0 +1,219 @@
+/* 主题质感效果层。
+   颜色令牌见 themes.css（每种主题各自定义 --surface-* / --glass-* / --shadow-*）。
+   本文件负责「表面质感」：液态玻璃的模糊 + 折射高光，拟物的压痕 + 浮雕。
+   选择器统一用 html[data-theme=…] 前缀（特异性 0,3,0），稳定压过组件 scoped
+   样式（.x[data-v-…] 为 0,2,0），从而集中控制所有页面/按钮/弹窗的质感，
+   无需逐个改动各组件 scoped 样式。 */
+
+/* ============================================================
+   液态玻璃主题：所有主要面板开启背景模糊 + 折射高光。
+   关键是让面板「透出下层渐变并被模糊」，同时用顶部高光描边
+   模拟玻璃边缘反光，形成悬浮玻璃片的效果。
+   ============================================================ */
+
+/* 主要面板统一玻璃化：模糊下层 + 半透明白 + 顶部高光 */
+html[data-theme='glass'] .menubar,
+html[data-theme='glass'] .toolbar,
+html[data-theme='glass'] .sidebar,
+html[data-theme='glass'] .statusbar,
+html[data-theme='glass'] .tabs,
+html[data-theme='glass'] .result-panel,
+html[data-theme='glass'] .result-panel__head,
+html[data-theme='glass'] .sql-log,
+html[data-theme='glass'] .sql-log__bar,
+html[data-theme='glass'] .panel,
+html[data-theme='glass'] .history__panel,
+html[data-theme='glass'] .tree,
+html[data-theme='glass'] .toast,
+html[data-theme='glass'] .modal,
+html[data-theme='glass'] .settings,
+html[data-theme='glass'] .form {
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  /* 顶部内高光模拟玻璃边缘反光，底部柔和投影制造悬浮 */
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.55),
+    var(--shadow-md);
+}
+
+/* 浮层类：玻璃化 + 更强的折射投影，凸显「悬浮玻璃片」 */
+html[data-theme='glass'] .popover,
+html[data-theme='glass'] .dropdown,
+html[data-theme='glass'] .menu,
+html[data-theme='glass'] .column-menu,
+html[data-theme='glass'] .filter,
+html[data-theme='glass'] .tooltip {
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 12px 40px rgba(40, 60, 120, 0.18);
+}
+
+/* 标签栏：活动标签呈「凸起玻璃片」 */
+html[data-theme='glass'] .tab.is-active {
+  background-color: rgba(255, 255, 255, 0.82);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    0 2px 8px rgba(40, 60, 120, 0.1);
+}
+
+/* 表格：表头玻璃化，行半透明让下层透出 */
+html[data-theme='glass'] .data-table thead th {
+  background-color: rgba(255, 255, 255, 0.6);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+/* 按钮：默认按钮呈磨砂玻璃片 */
+html[data-theme='glass'] .btn:not(.btn--primary):not(.btn--ghost):not(.btn--danger) {
+  background-color: rgba(255, 255, 255, 0.55);
+  -webkit-backdrop-filter: blur(8px) saturate(160%);
+  backdrop-filter: blur(8px) saturate(160%);
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 3px rgba(40, 60, 120, 0.1);
+}
+
+/* 主按钮：叠加顶部高光 + 品牌色投影 */
+html[data-theme='glass'] .btn--primary {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 2px 8px rgba(59, 130, 246, 0.28);
+}
+
+/* 输入框：凹陷玻璃槽 */
+html[data-theme='glass'] .input,
+html[data-theme='glass'] .combo__input,
+html[data-theme='glass'] select,
+html[data-theme='glass'] textarea {
+  background-color: rgba(255, 255, 255, 0.5);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: inset 0 1px 2px rgba(40, 60, 120, 0.08);
+}
+
+/* 图标按钮：悬停呈玻璃片 */
+html[data-theme='glass'] .icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================================
+   拟物主题：面板压痕 + 浮雕，按钮/输入呈物理按键质感。
+   顶部内高光 + 底部投影模拟「凸起」；输入框反向内阴影模拟「凹陷」。
+   ============================================================ */
+
+/* 主要面板：凸起浮雕（顶部受光、底部投影） */
+html[data-theme='skeuomorph'] .menubar,
+html[data-theme='skeuomorph'] .toolbar,
+html[data-theme='skeuomorph'] .sidebar,
+html[data-theme='skeuomorph'] .statusbar,
+html[data-theme='skeuomorph'] .tabs,
+html[data-theme='skeuomorph'] .result-panel,
+html[data-theme='skeuomorph'] .result-panel__head,
+html[data-theme='skeuomorph'] .sql-log,
+html[data-theme='skeuomorph'] .sql-log__bar,
+html[data-theme='skeuomorph'] .panel,
+html[data-theme='skeuomorph'] .history__panel,
+html[data-theme='skeuomorph'] .tree,
+html[data-theme='skeuomorph'] .modal,
+html[data-theme='skeuomorph'] .settings,
+html[data-theme='skeuomorph'] .form {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -1px 0 rgba(80, 60, 30, 0.08),
+    0 2px 6px rgba(60, 40, 20, 0.16);
+}
+
+/* 浮层：更深投影 + 明显浮雕边 */
+html[data-theme='skeuomorph'] .popover,
+html[data-theme='skeuomorph'] .dropdown,
+html[data-theme='skeuomorph'] .menu,
+html[data-theme='skeuomorph'] .column-menu,
+html[data-theme='skeuomorph'] .filter,
+html[data-theme='skeuomorph'] .toast,
+html[data-theme='skeuomorph'] .tooltip {
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 6px 18px rgba(60, 40, 20, 0.28);
+}
+
+/* 标签：凸起片；活动标签进一步浮雕 */
+html[data-theme='skeuomorph'] .tab {
+  border-radius: var(--radius-sm);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+html[data-theme='skeuomorph'] .tab.is-active {
+  background: linear-gradient(180deg, #fdf9f2 0%, #f0e7d6 100%);
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    0 2px 4px rgba(60, 40, 20, 0.2);
+}
+
+/* 表格：表头浮雕压条 */
+html[data-theme='skeuomorph'] .data-table thead th {
+  background: linear-gradient(180deg, #efe6d5 0%, #e3d8c3 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    inset 0 -1px 0 rgba(120, 90, 50, 0.16);
+}
+
+/* 按钮：物理按键——凸起，按下时凹陷 */
+html[data-theme='skeuomorph'] .btn:not(.btn--ghost) {
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    0 2px 3px rgba(60, 40, 20, 0.22);
+}
+
+html[data-theme='skeuomorph'] .btn:not(.btn--ghost):active:not(:disabled) {
+  box-shadow: inset 0 2px 4px rgba(60, 40, 20, 0.3);
+}
+
+html[data-theme='skeuomorph'] .btn--primary {
+  background: linear-gradient(180deg, #8a5826 0%, #6a4219 100%);
+  border-color: #4e2f10;
+  color: var(--text-inverse);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 2px 4px rgba(60, 40, 20, 0.3);
+}
+
+html[data-theme='skeuomorph'] .btn--primary:hover:not(:disabled) {
+  background: linear-gradient(180deg, #7a4d1e 0%, #5c3915 100%);
+}
+
+html[data-theme='skeuomorph'] .btn--primary:active:not(:disabled) {
+  box-shadow: inset 0 2px 5px rgba(40, 25, 8, 0.4);
+}
+
+/* 输入框：凹陷的物理槽 */
+html[data-theme='skeuomorph'] .input,
+html[data-theme='skeuomorph'] .combo__input,
+html[data-theme='skeuomorph'] select,
+html[data-theme='skeuomorph'] textarea {
+  background-color: #efe6d5;
+  border: 1px solid var(--border-strong);
+  box-shadow:
+    inset 0 2px 4px rgba(80, 60, 30, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+}
+
+/* 图标按钮：浮雕小按键 */
+html[data-theme='skeuomorph'] .icon-btn:hover {
+  background-color: rgba(255, 255, 255, 0.45);
+}
+
+/* 滚动条：拟物用带质感的滑块 */
+html[data-theme='skeuomorph'] ::-webkit-scrollbar-thumb {
+  background-color: rgba(90, 70, 40, 0.32);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}

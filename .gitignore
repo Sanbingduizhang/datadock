@@ -1,0 +1,36 @@
+# 依赖
+node_modules/
+
+# 前端构建产物
+dist/
+dist-ssr/
+*.local
+
+# Rust 构建产物
+src-tauri/target/
+# Tauri 构建期生成的权限 schema
+src-tauri/gen/schemas/
+
+# 本地数据库（DataDock 运行时生成，不入库）
+*.db
+*.db-shm
+*.db-wal
+
+# 日志
+*.log
+logs/
+
+# 环境变量与本地密钥
+.env
+.env.*
+!.env.example
+
+# 编辑器与系统
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+
+# 测试与覆盖率
+coverage/

@@ -1,0 +1,76 @@
+[package]
+name = "datadock"
+version = "1.0.0"
+description = "DataDock - 轻量级跨平台多数据源管理工具"
+license = "Apache-2.0"
+authors = ["DataDock"]
+edition = "2021"
+rust-version = "1.77.2"
+
+[lib]
+name = "datadock_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+# 桌面框架
+tauri = { version = "2", features = [] }
+
+# 文件保存对话框（导出数据时选择路径，实际写入由 Rust 完成）
+tauri-plugin-dialog = "2"
+
+# 窗口尺寸与位置记忆（退出时写入，启动时恢复）
+tauri-plugin-window-state = "2"
+
+# 序列化：IPC 数据模型
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# 统一错误类型
+thiserror = "2"
+
+# 异步流处理：结果集流式读取
+futures-util = "0.3"
+
+# 异步运行时（阶段 C 起的数据库与任务管理依赖）
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "sync", "time"] }
+
+# 本地存储与远程数据库驱动
+sqlx = { version = "0.8", default-features = false, features = [
+    "runtime-tokio",
+    "sqlite",
+    "mysql",
+    "postgres",
+    "migrate",
+    "macros",
+    # 远程数据库类型支持：JSON / DATETIME / 高精度 DECIMAL
+    "json",
+    "chrono",
+    "bigdecimal",
+    # SSL/TLS 支持（MySQL / PostgreSQL 加密连接）
+    "tls-rustls",
+] }
+
+# 业务主键
+uuid = { version = "1", features = ["v4"] }
+
+# 日志
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-appender = "0.2"
+redis = { version = "0.32.2", features = ["tokio-comp", "tls-rustls", "tokio-rustls-comp"] }
+
+# SSH 隧道（跳板机加密转发）
+russh = "0.65"
+
+# 系统凭据：按平台启用对应原生实现
+[target.'cfg(target_os = "macos")'.dependencies]
+keyring = { version = "3", features = ["apple-native"] }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+keyring = { version = "3", features = ["windows-native"] }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+keyring = { version = "3", features = ["sync-secret-service", "crypto-rust"] }

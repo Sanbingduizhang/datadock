@@ -1,0 +1,242 @@
+/* 主题颜色令牌。
+   浅色为默认基准，深色通过 [data-theme='dark'] 覆盖。
+   组件只允许使用这些变量取色，不允许硬编码颜色值。 */
+
+:root,
+[data-theme='light'] {
+  color-scheme: light;
+
+  /* 背景层级 */
+  --app-bg: #f4f5f7;
+  --surface-bg: #ffffff;
+  --surface-subtle: #fafbfc;
+  --surface-raised: #ffffff;
+  --surface-hover: rgba(15, 23, 42, 0.045);
+  --surface-active: rgba(15, 23, 42, 0.075);
+  --surface-selected: rgba(59, 130, 246, 0.1);
+
+  /* 玻璃拟态 */
+  --glass-bg: rgba(255, 255, 255, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(16px) saturate(180%);
+
+  /* 文字 */
+  --text-primary: #1d2129;
+  --text-secondary: #5c6470;
+  --text-tertiary: #8b93a1;
+  --text-inverse: #ffffff;
+  --text-link: #2563eb;
+
+  /* 边框与分割线 */
+  --border-color: #e3e6ec;
+  --border-strong: #d2d7e0;
+  --divider-color: #eceef2;
+
+  /* 品牌色与状态色 */
+  --primary-color: #3b82f6;
+  --primary-hover: #2f6fe0;
+  --primary-active: #2560c8;
+  --primary-soft: rgba(59, 130, 246, 0.12);
+
+  --success-color: #16a34a;
+  --success-soft: rgba(22, 163, 74, 0.12);
+  --warning-color: #d97706;
+  --warning-soft: rgba(217, 119, 6, 0.12);
+  --danger-color: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.1);
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.12);
+
+  /* 滚动条 */
+  --scrollbar-thumb: rgba(15, 23, 42, 0.18);
+  --scrollbar-thumb-hover: rgba(15, 23, 42, 0.3);
+
+  /* 遮罩（弹窗背景） */
+  --overlay-bg: rgba(15, 23, 42, 0.34);
+  --overlay-blur: blur(2px);
+}
+
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  /* 背景层级：避免纯黑，用层次区分区域 */
+  --app-bg: #16181d;
+  --surface-bg: #1d2026;
+  --surface-subtle: #212429;
+  --surface-raised: #262a31;
+  --surface-hover: rgba(255, 255, 255, 0.055);
+  --surface-active: rgba(255, 255, 255, 0.09);
+  --surface-selected: rgba(96, 165, 250, 0.16);
+
+  /* 玻璃拟态 */
+  --glass-bg: rgba(32, 36, 43, 0.72);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(16px) saturate(160%);
+
+  /* 文字 */
+  --text-primary: #e7eaf0;
+  --text-secondary: #a3abb8;
+  --text-tertiary: #7a828f;
+  --text-inverse: #16181d;
+  --text-link: #6aa8ff;
+
+  /* 边框与分割线 */
+  --border-color: #2e333b;
+  --border-strong: #3b414a;
+  --divider-color: #292e35;
+
+  /* 品牌色与状态色 */
+  --primary-color: #4f8ef7;
+  --primary-hover: #6aa1ff;
+  --primary-active: #3b7ae0;
+  --primary-soft: rgba(79, 142, 247, 0.18);
+
+  --success-color: #3ecf7a;
+  --success-soft: rgba(62, 207, 122, 0.16);
+  --warning-color: #e5a13c;
+  --warning-soft: rgba(229, 161, 60, 0.16);
+  --danger-color: #f26a6a;
+  --danger-soft: rgba(242, 106, 106, 0.16);
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.42);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.5);
+
+  /* 滚动条 */
+  --scrollbar-thumb: rgba(255, 255, 255, 0.16);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.28);
+
+  /* 遮罩（弹窗背景） */
+  --overlay-bg: rgba(0, 0, 0, 0.5);
+  --overlay-blur: blur(2px);
+}
+
+/* 玻璃拟态：半透明磨砂面板，浅色基底。
+   组件若使用 --surface-bg / --surface-raised 之类变量，
+   会自动继承这里的半透明定义；未使用变量的组件退化为纯色，仍然可读。 */
+[data-theme='glass'] {
+  color-scheme: light;
+
+  /* 背景：彩色光晕网格，让半透明面板真正透出颜色，玻璃质感才成立 */
+  --app-bg:
+    radial-gradient(900px 720px at 24% 16%, rgba(96, 158, 255, 0.7) 0%, rgba(96, 158, 255, 0) 62%),
+    radial-gradient(900px 720px at 76% 24%, rgba(176, 126, 255, 0.6) 0%, rgba(176, 126, 255, 0) 62%),
+    radial-gradient(1000px 820px at 44% 92%, rgba(86, 216, 168, 0.55) 0%, rgba(86, 216, 168, 0) 66%),
+    linear-gradient(135deg, #c9dcff 0%, #ded0ff 48%, #c9f0de 100%);
+  --surface-bg: rgba(255, 255, 255, 0.32);
+  --surface-subtle: rgba(255, 255, 255, 0.26);
+  --surface-raised: rgba(255, 255, 255, 0.62);
+  --surface-hover: rgba(255, 255, 255, 0.4);
+  --surface-active: rgba(255, 255, 255, 0.52);
+  --surface-selected: rgba(59, 130, 246, 0.18);
+
+  --glass-bg: rgba(255, 255, 255, 0.38);
+  --glass-border: rgba(255, 255, 255, 0.78);
+  --glass-blur: blur(22px) saturate(200%);
+
+  /* 文字 */
+  --text-primary: #1b2433;
+  --text-secondary: #525d70;
+  --text-tertiary: #818b9c;
+  --text-inverse: #ffffff;
+  --text-link: #2563eb;
+
+  /* 边框与分割线 */
+  --border-color: rgba(255, 255, 255, 0.7);
+  --border-strong: rgba(30, 50, 90, 0.14);
+  --divider-color: rgba(30, 50, 90, 0.08);
+
+  /* 品牌色与状态色 */
+  --primary-color: #3b82f6;
+  --primary-hover: #2f6fe0;
+  --primary-active: #2560c8;
+  --primary-soft: rgba(59, 130, 246, 0.14);
+
+  --success-color: #16a34a;
+  --success-soft: rgba(22, 163, 74, 0.14);
+  --warning-color: #d97706;
+  --warning-soft: rgba(217, 119, 6, 0.14);
+  --danger-color: #dc2626;
+  --danger-soft: rgba(220, 38, 38, 0.12);
+
+  /* 阴影：更柔和、带轻微扩散，凸显悬浮感 */
+  --shadow-sm: 0 1px 3px rgba(40, 60, 120, 0.08);
+  --shadow-md: 0 6px 20px rgba(40, 60, 120, 0.1);
+  --shadow-lg: 0 20px 48px rgba(40, 60, 120, 0.16);
+
+  --scrollbar-thumb: rgba(30, 50, 90, 0.18);
+  --scrollbar-thumb-hover: rgba(30, 50, 90, 0.3);
+
+  /* 遮罩（弹窗背景）：玻璃主题更通透，凸显悬浮玻璃面板 */
+  --overlay-bg: rgba(40, 60, 120, 0.16);
+  --overlay-blur: blur(4px) saturate(120%);
+}
+
+/* 拟物风格：带纹理与压痕的高阶表面，浅色基底。
+   面板使用内阴影模拟凹凸感，强调物理质感而非扁平化。 */
+[data-theme='skeuomorph'] {
+  color-scheme: light;
+
+  /* 背景：带纹理的皮革/织物基底（用两层径向渐变 + 噪点） */
+  --app-bg:
+    radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.06) 0%, transparent 60%),
+    radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #d7c9b6 0%, #c9baa4 100%);
+  --surface-bg: linear-gradient(180deg, #f8f3ea 0%, #efe7d9 100%);
+  --surface-subtle: linear-gradient(180deg, #ede4d3 0%, #e2d8c4 100%);
+  --surface-raised: linear-gradient(180deg, #fdf9f2 0%, #f3ebdc 100%);
+  --surface-hover: rgba(60, 50, 30, 0.07);
+  --surface-active: rgba(60, 50, 30, 0.1);
+  --surface-selected: rgba(100, 130, 80, 0.18);
+
+  --glass-bg: rgba(250, 246, 238, 0.94);
+  --glass-border: rgba(80, 60, 30, 0.18);
+  --glass-blur: none;
+
+  /* 文字 */
+  --text-primary: #2b2419;
+  --text-secondary: #5a4e3d;
+  --text-tertiary: #8a7d69;
+  --text-inverse: #f8f3ea;
+  --text-link: #7a4d1e;
+
+  /* 边框与分割线 */
+  --border-color: #c9b896;
+  --border-strong: #a8936d;
+  --divider-color: #d9ccb0;
+
+  /* 品牌色与状态色 */
+  --primary-color: #7a4d1e;
+  --primary-hover: #613c15;
+  --primary-active: #4e2f10;
+  --primary-soft: rgba(122, 77, 30, 0.14);
+
+  --success-color: #4a7c2f;
+  --success-soft: rgba(74, 124, 47, 0.14);
+  --warning-color: #b8741f;
+  --warning-soft: rgba(184, 116, 31, 0.14);
+  --danger-color: #a32e2e;
+  --danger-soft: rgba(163, 46, 46, 0.12);
+
+  /* 阴影：内阴影模拟凹凸质感 */
+  --shadow-sm:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 1px 3px rgba(60, 40, 20, 0.18);
+  --shadow-md:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 4px 12px rgba(60, 40, 20, 0.22);
+  --shadow-lg:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 16px 40px rgba(60, 40, 20, 0.28);
+
+  --scrollbar-thumb: rgba(90, 70, 40, 0.28);
+  --scrollbar-thumb-hover: rgba(90, 70, 40, 0.42);
+
+  /* 遮罩（弹窗背景）：拟物用暖褐色调，与皮革基底协调 */
+  --overlay-bg: rgba(60, 45, 25, 0.32);
+  --overlay-blur: none;
+}

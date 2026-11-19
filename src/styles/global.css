@@ -1,0 +1,70 @@
+/* 全局基础样式：只定义应用级排版、滚动条和焦点样式。 */
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  /* 使用 background 而非 background-color，以支持玻璃/拟物主题的渐变背景 */
+  background: var(--app-bg);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-normal);
+  overflow: hidden;
+}
+
+::selection {
+  background-color: var(--primary-soft);
+  color: var(--text-primary);
+}
+
+/* 滚动条：桌面端细窄风格 */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scrollbar-thumb-hover);
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--primary-color);
+  outline-offset: 1px;
+}
+
+/* 允许文本选择的区域（SQL、结果、日志等）显式声明 */
+.selectable {
+  user-select: text;
+}
+
+/* 仅供屏幕阅读器 */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}

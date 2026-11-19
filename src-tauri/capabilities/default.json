@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "DataDock 主窗口默认权限：核心 IPC、关闭窗口、保存文件对话框；不授予文件系统读写与 Shell 等高权限接口（导出文件由 Rust 侧写入）。",
+  "windows": ["main"],
+  "permissions": ["core:default", "core:window:allow-close", "dialog:default"]
+}
